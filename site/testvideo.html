@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+    <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+  <body>
+    <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
+    
+    <aside class="showcase">
+        <div id="player"></div>
+        <div class="grid">
+            <div class="eq"></div>
+            <div class="timebar">
+                <div vlass="current_time"></div>
+            </div>
+        </div>
+    </aside>
+    <script>
+      var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    var done = false;
+    var player;
+    var videoId = '3nfadIylKwc';
+    var startSeconds = 5;
+    var endSeconds = 293;
+    var setVolume = 15;
+    var suggestedQuality = 'large';
+    function onYouTubeIframeAPIReady() {
+          player = new YT.Player('player', {
+          height:  ($(window).width() / 16) * 9 + 35,
+          width: '100%',
+          events: {
+            'onReady': onPlayerReady,
+            'onStateChange': onPlayerStateChange
+          }
+        });
+    }
+
+    function onPlayerReady(evt) {
+        player.loadVideoById({'videoId': videoId, 'startSeconds': startSeconds, 'endSeconds': endSeconds, 'suggestedQuality': suggestedQuality });
+        evt.target.playVideo();
+    }
+
+    /* Soundcheck */
+    function onPlayerStateChange(event) {
+        var done = false;
+
+        if (event.data == YT.PlayerState.PLAYING && !done) {
+            if (player.isMuted()){
+                $(".eq").addClass("mute");  
+            }
+
+            if (player.getVolume() > setVolume) {
+                player.setVolume(setVolume);
+            } 
+            done = true;
+        }
+
+        /* Loop function */
+        if (event.data == YT.PlayerState.ENDED && !done) {
+            player.seekTo(startSeconds, true);
+            done = true;
+        }
+     }
+
+    /* Reponsive sizes */ 
+    $(document).on("ready", function() {
+        $(window).on("resize", function() {
+            $(".showcase iframe").attr("height", ($(window).width() / 16) * 9 + 35 );
+
+            $(".showcase").css({
+                "height": (($(window).width() / 16) * 9 + 35) + "px",
+                "max-height": ( $(window).height() + 39 - 26) + "px"
+            });
+
+            $(".admin-bar .showcase").css({
+                "max-height": ( $(window).height() + 39 - 58) + "px"
+            });
+        }).trigger("resize")        
+    }).trigger("ready")
+
+    /* Timebar */
+    window.setInterval(function(){
+        console.log(player.getCurrentTime())
+        var duration = player.getDuration() - (player.getDuration() - endSeconds) - startSeconds;
+        var currentTime = player.getCurrentTime() - startSeconds;
+        $(".current_time").css({
+            "width": ( currentTime / duration ) * 100 + "%"
+        });
+    }, 100);
+
+
+    /* Mute button */
+    $(".eq").on("click", function(){
+        if( $(".eq").hasClass("mute")) {
+            player.unMute();
+            $(".eq").removeClass("mute");
+        } else {
+            player.mute();
+            $(".eq").addClass("mute");
+        }
+    }).trigger("click")
+     
+    </script>
+  </body>
+</html>

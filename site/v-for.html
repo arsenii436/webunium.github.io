@@ -1,0 +1,74 @@
+<html>
+ 
+  <head>
+    <title>Привет, Vue!</title>
+    <!-- Подключен bootstrap для улучшения внешнего вида элементов (необязательно) -->
+    <link 
+    rel="stylesheet" 
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" 
+    integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" 
+    crossorigin="anonymous">
+  </head>
+ 
+  <body>
+    <div class="container">
+ 
+      <!-- Контейнер к которому подключен Vue.js -->
+      <div id="app">
+ 
+        <!-- Card из CSS-фреймворка Bootstrap позволяет 
+        красивее отображать элементы на странице -->
+        <div class="card">
+          <h5 class="card-header">Директива v-for</h5>
+          <div class="card-body">
+ 
+            <h4>Список любимых фруктов:</h4>                        
+            <div>
+              <ul class="list-group" v-cloak>
+                <!-- Для того чтобы вывести список фруктов из массива fruits добавляем
+                к тегу li директиву v-for и указываем, что нужно перебрать массив и на каждой 
+                итерации добавлять в переменную fruit новое значение, добавляем так же :key="index"
+                он является обязательнм индификаторм (ключем) для к каждой записи, чтобы система могла
+                отслеживать элементы списка в разметке и если необходимо их реактивно изменить -->
+                <li 
+                v-for="(fruit, index) in fruits" 
+                :key="index" 
+                class="list-group-item">{{ fruit }}</li>
+              </ul>
+            </div>
+ 
+          </div>
+        </div>
+ 
+        <!-- Выводим состояние объекта $data (для лучшего понимания процесса)-->
+        <div class="card">
+          <h5 class="card-header">Консоль</h5>
+          <div class="card-body">
+ 
+            <pre v-cloak>{{ $data }}</pre>
+ 
+          </div>
+        </div>
+ 
+      </div>
+    </div>
+ 
+    <!-- Подключаем Vue.js -->
+    <script src="https://vuejs.org/js/vue.js"></script>
+ 
+    <script>
+      /* Создаем новый экземпляр объекта Vue.js */
+      new Vue({
+        /* Подключаем Vue к #app в разметке страницы */
+        el: '#app',
+        data: {
+          /* Создаем свойство fruits в объекте data
+          это массив с названиями фруктов */
+          fruits: ['Apple', 'Banana', 'Peach', 'Pear', 'Plum']
+        }
+      })
+ 
+    </script>
+  </body>
+ 
+</html>

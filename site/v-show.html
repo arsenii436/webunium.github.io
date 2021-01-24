@@ -1,0 +1,79 @@
+<html>
+ 
+  <head>
+    <title>Привет, Vue!</title>
+    <!-- Подключен bootstrap для улучшения внешнего вида элементов (необязательно) -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" 
+    integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" 
+    crossorigin="anonymous">
+  </head>
+ 
+  <body>
+    <div class="container">
+ 
+      <!-- Контейнер к которому подключен Vue.js -->
+      <div id="app">
+ 
+        <!-- Card из CSS-фреймворка Bootstrap позволяет 
+        красивее отображать элементы на странице -->
+        <div class="card">
+          <h5 class="card-header">Директива v-show</h5>
+          <div class="card-body">
+ 
+            <!-- Устанавливаем директиву v-show в однотипные теги p с указаниями
+            дальнейших действий, это позволит выводить нужное нам сообщение 
+            в зависимости от значения поля message. Есть текст, для v-show 
+            это будет значить - true, нет - false -->
+            <p class="card-text" v-show="message">Удалите весь текст кнопка "Отправить" пропадет:</p>
+            <p class="card-text" v-show="!message">Теперь напишите любой текст кнопка "Отправить" появится:</p>
+ 
+            <!-- Устанавливаем двухстороннюю привязку данных, что позволяет налету менять 
+            значение свойства message в объекте data -->
+            <div class="form-group">
+              <textarea v-model="message" v-on:change="strtrim(message)" class="form-control" style="white-space: pre;"></textarea>
+            </div>
+ 
+            <!-- Благодаря директиве v-show, кнопка "Отправить" исчезает или появляется
+            на странице в зависимости от состояния поля message. -->
+            <button class="btn btn-success" v-show="message">Отправить</button>
+ 
+          </div>
+        </div>
+ 
+        <!-- Выводим состояние объекта $data (для лучшего понимания процесса)-->
+        <div class="card">
+          <h5 class="card-header">Консоль</h5>
+          <div class="card-body">
+ 
+            <pre v-cloak>{{ $data }}</pre>
+ 
+          </div>
+        </div>
+ 
+      </div>
+    </div>
+ 
+    <!-- Подключаем Vue.js -->
+    <script src="https://vuejs.org/js/vue.js"></script>
+ 
+    <script>
+        let reg = /^\s*$/;
+      /* Создаем новый экземпляр объекта Vue.js */
+      new Vue({
+        /* Подключаем Vue к #app в разметке страницы */
+        el: '#app',
+        data: {
+          /* Создаем свойство message с значением по умолчанию в объекте data */
+          message: 'Этот текст нужно удалить и кнопка "Отправить" пропадет'
+        },
+        methods:{
+            strtrim: function(item){
+                this.message = item.trim()
+            }
+        }
+      })
+ 
+    </script>
+  </body>
+ 
+</html>
